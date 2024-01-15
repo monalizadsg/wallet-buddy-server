@@ -4,7 +4,7 @@ import { categoryRouter } from "./category.js";
 
 const router = express.Router();
 
-router.use("/transactions", transactionRouter);
+router.use("/transaction", transactionRouter);
 router.use("/category", categoryRouter);
 
 export { router as appRouter };
