@@ -15,7 +15,7 @@ router.post("/", async (req, res) => {
     if (!amount || !description || !categoryId) {
       return res
         .status(400)
-        .json({ error: "Amount, description, and categoryId are required" });
+        .json({ error: "Amount, description, and category are required" });
     }
 
     const newTransaction = new TransactionModel({
