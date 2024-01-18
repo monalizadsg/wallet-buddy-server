@@ -14,6 +14,10 @@ const BudgetSchema = new mongoose.Schema({
     ref: "Category",
     required: true,
   },
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
 });
 
 export const BudgetModel = mongoose.model("Budget", BudgetSchema);
