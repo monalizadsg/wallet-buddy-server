@@ -35,8 +35,8 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.get("/users/me", async (req, res) => {
-  const email = req.user.email;
+router.get("/me", async (req, res) => {
+  const email = req.body.email;
   const user = await UserModel.findOne({ email });
   res.send({
     firstName: user.firstName,
