@@ -9,7 +9,7 @@ router.use(bodyParser.json());
 
 // create new transaction item
 router.post("/", async (req, res) => {
-  const { amount, description, categoryId, date } = req.body;
+  const { amount, description, categoryId, date, userId } = req.body;
 
   try {
     if (!amount || !description || !categoryId) {
@@ -23,6 +23,7 @@ router.post("/", async (req, res) => {
       description,
       categoryId,
       date,
+      userId,
     });
 
     const transaction = await newTransaction.save();
@@ -33,9 +34,10 @@ router.post("/", async (req, res) => {
 });
 
 // get all transactions
-router.get("/", async (req, res) => {
+router.get("/:userId", async (req, res) => {
+  const userId = req.params.userId;
   try {
-    const result = await TransactionModel.find({});
+    const result = await TransactionModel.find({ userId });
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json(error);
