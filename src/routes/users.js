@@ -5,12 +5,10 @@ import { UserModel } from "../model/User.js";
 const router = express.Router();
 
 router.post("/", async (req, res) => {
-  const { firstName, lastName, email, password } = req.body;
+  const { username, password } = req.body;
 
   try {
-    // TODO: validate form data
-
-    let user = await UserModel.findOne({ email });
+    let user = await UserModel.findOne({ username });
     if (user) {
       return res.status(400).json({ message: "User already exists!" });
     }
@@ -21,27 +19,25 @@ router.post("/", async (req, res) => {
 
     // add new user to db
     const newUser = new UserModel({
-      firstName,
-      lastName,
-      email,
+      username,
       password: hashedPassword,
     });
     await newUser.save();
 
-    res.status(201).send({ email: newUser.email });
+    res.status(201).send({ username: newUser.username });
   } catch (err) {
     console.log(err);
     res.status(500).send("Something went wrong");
   }
 });
 
-router.get("/me", async (req, res) => {
-  const email = req.body.email;
-  const user = await UserModel.findOne({ email });
-  res.send({
-    firstName: user.firstName,
-    lastName: user.lastName,
-  });
-});
+// router.get("/me", async (req, res) => {
+//   const username = req.body.username;
+//   const user = await UserModel.findOne({ username });
+//   res.send({
+//     firstName: user.firstName,
+//     lastName: user.lastName,
+//   });
+// });
 
 export { router as userRouter };
