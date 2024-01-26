@@ -31,13 +31,4 @@ router.post("/", async (req, res) => {
   }
 });
 
-// router.get("/me", async (req, res) => {
-//   const username = req.body.username;
-//   const user = await UserModel.findOne({ username });
-//   res.send({
-//     firstName: user.firstName,
-//     lastName: user.lastName,
-//   });
-// });
-
 export { router as userRouter };
