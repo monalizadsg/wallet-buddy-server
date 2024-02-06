@@ -1,5 +1,6 @@
 import express from "express";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 import { UserModel } from "../model/User.js";
 
 const router = express.Router();
@@ -24,7 +25,16 @@ router.post("/", async (req, res) => {
     });
     await newUser.save();
 
-    res.status(201).send({ username: newUser.username });
+    // get token after sign in
+    const token = jwt.sign(
+      { username: newUser.username },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: 86400, // 24hrs in seconds
+      }
+    );
+
+    res.status(201).send({ token, username: newUser.username });
   } catch (err) {
     console.log(err);
     res.status(500).send("Something went wrong");
