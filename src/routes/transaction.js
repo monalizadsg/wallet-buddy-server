@@ -45,8 +45,9 @@ router.get("/:userId", async (req, res) => {
 });
 
 // update transaction
-router.put("/", async (req, res) => {
-  const { id, amount, description, categoryId, date } = req.body;
+router.put("/:id", async (req, res) => {
+  const id = req.params.id;
+  const { amount, description, categoryId, date } = req.body;
 
   try {
     const result = await TransactionModel.findByIdAndUpdate(

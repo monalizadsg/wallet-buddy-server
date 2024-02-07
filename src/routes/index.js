@@ -8,10 +8,10 @@ import auth from "../middlewares/authMiddleware.js";
 
 const router = express.Router();
 
-router.use("/user", userRouter);
+router.use("/users", userRouter);
 router.use("/auth", authRouter);
-router.use("/transaction", auth, transactionRouter);
-router.use("/category", auth, categoryRouter);
-router.use("/budget", auth, budgetRouter);
+router.use("/transactions", auth, transactionRouter);
+router.use("/categories", auth, categoryRouter);
+router.use("/budgets", auth, budgetRouter);
 
 export { router as appRouter };
