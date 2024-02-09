@@ -37,8 +37,9 @@ router.post("/", async (req, res) => {
 router.get("/:userId", async (req, res) => {
   const userId = req.params.userId;
   try {
-    const result = await TransactionModel.find({ userId }).populate("category");
-    console.log(result);
+    const result = await TransactionModel.find({ userId })
+      .sort({ date: -1 })
+      .populate("category");
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json(error);
