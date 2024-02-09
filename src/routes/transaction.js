@@ -9,10 +9,10 @@ router.use(bodyParser.json());
 
 // create new transaction item
 router.post("/", async (req, res) => {
-  const { amount, description, categoryId, date, userId } = req.body;
+  const { amount, description, category, date, userId } = req.body;
 
   try {
-    if (!amount || !description || !categoryId) {
+    if (!amount || !description || !category) {
       return res
         .status(400)
         .json({ error: "Amount, description, and category are required" });
@@ -21,7 +21,7 @@ router.post("/", async (req, res) => {
     const newTransaction = new TransactionModel({
       amount,
       description,
-      categoryId,
+      category,
       date,
       userId,
     });
@@ -37,7 +37,8 @@ router.post("/", async (req, res) => {
 router.get("/:userId", async (req, res) => {
   const userId = req.params.userId;
   try {
-    const result = await TransactionModel.find({ userId });
+    const result = await TransactionModel.find({ userId }).populate("category");
+    console.log(result);
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json(error);
@@ -47,12 +48,12 @@ router.get("/:userId", async (req, res) => {
 // update transaction
 router.put("/:id", async (req, res) => {
   const id = req.params.id;
-  const { amount, description, categoryId, date } = req.body;
+  const { amount, description, category, date } = req.body;
 
   try {
     const result = await TransactionModel.findByIdAndUpdate(
       id,
-      { amount, description, categoryId, date },
+      { amount, description, category, date },
       { new: true }
     );
     res.status(200).json(result);
