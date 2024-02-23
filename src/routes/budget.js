@@ -9,17 +9,17 @@ router.use(bodyParser.json());
 
 // create new budget item
 router.post("/", async (req, res) => {
-  const { amountLimit, periodType, categoryId, userId } = req.body;
+  const { amountLimit, periodType, category, userId } = req.body;
 
   try {
-    if (!amountLimit || !periodType || !categoryId) {
+    if (!amountLimit || !periodType || !category) {
       return res
         .status(400)
         .json({ error: "Amount Limit, period, category are required" });
     }
 
     // Check if category already exists
-    const existingBudget = await BudgetModel.findOne({ categoryId });
+    const existingBudget = await BudgetModel.findOne({ category });
 
     if (existingBudget) {
       return res
@@ -30,7 +30,7 @@ router.post("/", async (req, res) => {
     const newBudget = new BudgetModel({
       amountLimit,
       periodType,
-      categoryId,
+      category,
       userId,
     });
 
@@ -45,7 +45,7 @@ router.post("/", async (req, res) => {
 router.get("/:userId", async (req, res) => {
   const userId = req.params.userId;
   try {
-    const result = await BudgetModel.find({ userId });
+    const result = await BudgetModel.find({ userId }).populate("category");
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json(error);
